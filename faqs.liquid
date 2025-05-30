@@ -3,9 +3,8 @@
 {% stylesheet %}
   .faq-container {
     max-width: 800px;
-    margin: 50px auto;
+    margin: 30px auto;
     padding: 20px;
-    font-family: 'Arial, sans-serif';
     color: #333;
   }
 
@@ -57,7 +56,10 @@
     transition: max-height 0.3s ease;
     background-color: #fff;
   }
-
+  
+  .faq-answer.active {
+   max-height: 500px; /* Adjust as needed for your content height */
+  }
   /* Style for the answer text */
   .faq-answer p {
     padding: 20px;
@@ -144,15 +146,26 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const questions = document.querySelectorAll('.faq-question');
+
   questions.forEach(btn => {
     btn.addEventListener('click', function() {
       const answer = this.nextElementSibling;
-      answer.style.display = (answer.style.display === 'block') ? 'none' : 'block';
-      // Optional: rotate arrow
       const arrow = this.querySelector('.arrow');
-      arrow.style.transform = (answer.style.display === 'block') ? 'rotate(180deg)' : 'rotate(0deg)';
+
+      // Close all other answers
+      document.querySelectorAll('.faq-answer').forEach(ans => {
+        if (ans !== answer) {
+          ans.classList.remove('active');
+          ans.previousElementSibling.querySelector('.arrow').style.transform = 'rotate(0deg)';
+        }
+      });
+
+      // Toggle current answer
+      answer.classList.toggle('active');
+      arrow.style.transform = answer.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
     });
   });
 });
 </script>
+
 
